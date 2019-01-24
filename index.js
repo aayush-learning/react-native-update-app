@@ -241,7 +241,7 @@ class RNUpdate extends Component {
         return (
             <TouchableOpacity onPress={this.updateApp}>
                 <View style={styles.updateBtn}>
-                    <Text style={styles.updateBtnText}>{progress == 1 ? '安装' : updateBtnText}</Text>
+                    <Text style={styles.updateBtnText}>{progress == 1 ? 'Updating' : updateBtnText}</Text>
                 </View>
             </TouchableOpacity>
         )
