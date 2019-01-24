@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius: 5,
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "space-around",
         borderWidth: 1,
         borderColor: "#eee",
         overflow: "hidden"
