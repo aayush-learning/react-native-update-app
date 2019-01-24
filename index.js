@@ -299,7 +299,7 @@ class RNUpdate extends Component {
     renderFileSize = () => {
         let {fileSize} = this.state
         if (!isIOS) {
-            return <Text>文件大小：{fileSize}M</Text>
+            return <Text>File s ize：{fileSize}M</Text>
         }
     }
 
@@ -325,7 +325,7 @@ class RNUpdate extends Component {
                         <View style={{width: updateBoxWidth, height: 85}}>
                             <ScrollView style={{paddingLeft: 10, paddingRight: 10}}>
                                 {this.renderFileSize()}
-                                <Text>升级说明：</Text>
+                                <Text>Description：</Text>
                                 {desc &&
                                 desc.map((d, i) => {
                                     return (
