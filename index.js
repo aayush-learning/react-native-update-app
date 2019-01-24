@@ -299,7 +299,7 @@ class RNUpdate extends Component {
     renderFileSize = () => {
         let {fileSize} = this.state
         if (!isIOS) {
-            return <Text>File s ize：{fileSize}M</Text>
+            return <Text>File size：{fileSize}M</Text>
         }
     }
 
