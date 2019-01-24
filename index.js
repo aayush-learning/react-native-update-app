@@ -234,14 +234,14 @@ class RNUpdate extends Component {
                             width: progress * updateBoxWidth,
                         }}
                     />
-                    <Text style={styles.updateBtnText}>下载中{parseInt(progress * 100, 10)}%</Text>
+                    <Text style={styles.updateBtnText}>Downloading {parseInt(progress * 100, 10)}%</Text>
                 </View>
             )
         }
         return (
             <TouchableOpacity onPress={this.updateApp}>
                 <View style={styles.updateBtn}>
-                    <Text style={styles.updateBtnText}>{progress == 1 ? 'Updating' : updateBtnText}</Text>
+                    <Text style={styles.updateBtnText}>{progress == 1 ? '安装' : updateBtnText}</Text>
                 </View>
             </TouchableOpacity>
         )
