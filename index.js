@@ -24,7 +24,7 @@ const isIOS = Platform.OS == "ios"
 
 
 class RNUpdate extends Component {
-    // 定义默认属性
+    // Define default properties
     static defaultProps = {
         progressBarColor: "#f50",
         updateBoxWidth: 250,
@@ -35,9 +35,9 @@ class RNUpdate extends Component {
         bannerWidth: 250,
         bannerHeight: 120,
         bannerResizeMode: 'contain',
-        successTips: "", // 包下载成功的提示
-        errorTips: "", // 下载发生错误的提示
-        CancelTips: "", // 用户取消升级的提示
+        successTips: "", // Tips for successful package download
+        errorTips: "", // Download the error message
+        CancelTips: "", // User prompt to cancel the upgrade
         bannerImage: require('./theme/1/banner.png'),
         closeImage: require('./theme/1/close.png'),
     }
@@ -47,14 +47,14 @@ class RNUpdate extends Component {
         this.state = {
             progress: 0,
             modalVisible: false,
-            desc: [], //更新说明
+            desc: [], //Release Notes
             fileSize: -1,
         }
 
-        this.jobId = 0 // 下载任务的id，用来停止下载
-        this.fetchRes = {} // 远程请求更新的json数据
+        this.jobId = 0 // Download task id，Used to stop downloading
+        this.fetchRes = {} // Remotely requesting updated json data
 
-        this.loading = false // 是否在下载中
+        this.loading = false // Is it in the download?
 
         this.filePath = ''
     }
@@ -75,10 +75,10 @@ class RNUpdate extends Component {
             fileSize: -1,
         })
 
-        this.jobId = 0 // 下载任务的id，用来停止下载
-        this.fetchRes = {} // 远程请求更新的json数据
+        this.jobId = 0 // Download task id，用来停止下载
+        this.fetchRes = {} // Used to stop downloading
 
-        this.loading = false // 是否在下载中
+        this.loading = false // Is it in the download?
     }
 
     checkUpdate(fetchRes, isManual) {
@@ -86,7 +86,7 @@ class RNUpdate extends Component {
             this.fetchRes = fetchRes
             let {version, desc} = fetchRes
 
-            // 安装包下载目录
+            // Installation package download directory
 
             if (!Array.isArray(desc)) {
                 desc = [desc]
@@ -112,7 +112,7 @@ class RNUpdate extends Component {
                 }
             } else {
                 if (isManual) {
-                    ToastAndroid.show("已经是最新版本",
+                    ToastAndroid.show("Already the latest version",
                         ToastAndroid.SHORT,
                         ToastAndroid.BOTTOM
                     )
@@ -124,7 +124,7 @@ class RNUpdate extends Component {
     }
 
     errorTips = () => {
-        ToastAndroid.show("安装失败",
+        ToastAndroid.show("installation failed",
             ToastAndroid.SHORT,
             ToastAndroid.BOTTOM
         )
@@ -133,11 +133,11 @@ class RNUpdate extends Component {
     androidUpdate = async () => {
         let _this = this
         const {url, filename, version} = this.fetchRes
-        // 按照目录/包名/文件名 存放，生成md5文件标识
+        // Generate md5 file identifier according to directory/package name/file name
 
         this.filePath = `${RNFS.ExternalDirectoryPath}/${filename}${version}.apk`
 
-        // 检查包是否已经下载过，如果有，则直接安装
+        // Check if the package has been downloaded, if it is, install it directly
         let exist = await RNFS.exists(this.filePath)
         if (exist) {
             RNUpdateApp.install(this.filePath)
@@ -145,31 +145,31 @@ class RNUpdate extends Component {
             return
         }
 
-        // 下载apk并安装
+        // Download apk and install
         RNFS.downloadFile({
             fromUrl: url,
             toFile: this.filePath,
-            progressDivider: 2,   // 节流
+            progressDivider: 2,   // Throttling
             begin(res) {
-                _this.jobId = res.jobId   // 设置jobId，用于暂停和恢复下载任务
+                _this.jobId = res.jobId   // Set jobId，Used to pause and resume download tasks
                 this.loading = true
             },
             progress(res) {
                 let progress = (res.bytesWritten / res.contentLength).toFixed(2, 10)
-                // 此处 this 指向有问题，需要使用 _this
+                // Here this points to a problem and needs to use _this
                 _this.setState({
                     progress
                 })
             }
         }).promise.then(response => {
-            // 下载完成后
+            // After the download is complete
             this.hideModal()
             if (response.statusCode == 200) {
                 // console.log("FILES UPLOADED!") // response.statusCode, response.headers, response.body
                 RNUpdateApp.install(this.filePath)
 
             } else {
-                // 提示安装失败，关闭升级窗口
+                // Prompt installation failed, close the upgrade window
                 this.errorTips()
             }
 
@@ -185,16 +185,16 @@ class RNUpdate extends Component {
 
 
     updateApp = () => {
-        // 如果已经开始下载
+        // If you have already started downloading
         if (this.loading) return
-        // 如果是android
+        // If it is android
         if (!isIOS) {
             this.androidUpdate()
             return
         }
 
         let {url} = this.fetchRes
-        // 如果是ios，打开appstore连接
+        // If it is ios, open the appstore connection
         Linking.openURL(url).catch(err =>
             console.warn("An error occurred", err)
         )
